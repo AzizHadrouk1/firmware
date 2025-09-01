@@ -1,18 +1,20 @@
-#include <Arduino.h>
+#include <dummy.h>
 
-// put function declarations here:
-int myFunction(int, int);
+#define switche 23  // GPIO14 (D5 sur NodeMCU). Tu peux changer selon ton câblage.
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(115200);
+  pinMode(switche, INPUT_PULLUP); // ESP8266 ne supporte pas INPUT_PULLDOWN
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+  int state = digitalRead(switche);
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  if (state == LOW) {
+    Serial.println("Bouton PRESSE");   // appuyé = LOW car relié à GND
+  } else {
+    Serial.println("Bouton RELACHE"); // relâché = HIGH grâce au pull-up interne
+  }
+
+  delay(300);
 }
